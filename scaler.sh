@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get cpu cores count minus 1, to allow maping from 0
-cpucorecount=$(cat /proc/cpuinfo | grep cores | sort -u | awk '{ print $4 - 1 }')
+cpucorecount=$(grep processor /proc/cpuinfo | wc -l | awk '{ print $1 - 1 }')
 
 # Set correct cpufreq governor to allow user defined frequency scaling
 governor=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
