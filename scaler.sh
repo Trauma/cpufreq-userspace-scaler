@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Make script safer
+set -euxo pipefail
+
 # Get cpu cores count minus 1, to allow maping from 0
 cpucorecount=$(cat /proc/cpuinfo | grep cores | sort -u | awk '{ print $4 - 1 }')
 
