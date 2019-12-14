@@ -39,8 +39,8 @@ function main {
   midfreq=${freqlist[$((${#freqlist[*]}/2))]}
 
   # Set load steps to trigger frequencies scaling, this user overidable
-  lowload=${lowload:=050}
-  midload=${midload:=065}
+  lowload=${lowload:=010}
+  midload=${midload:=020}
 
   for i in $(seq 0 ${cpucorecount})
     do
