@@ -41,7 +41,6 @@ function main {
   # Set load steps to trigger frequencies scaling, this user overidable
   lowload=${lowload:=050}
   midload=${midload:=065}
-  highload=${highload:=085}
 
   for i in $(seq 0 ${cpucorecount})
     do
@@ -49,7 +48,7 @@ function main {
         echo $minfreq > /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_setspeed
       elif [ "$loadavg" -ge $((10#$lowload)) ] && [ "$loadavg" -le $((10#$midload)) ]; then
         echo $midfreq > /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_setspeed
-      elif [ "$loadavg" -ge $((10#$highload)) ]; then
+      elif [ "$loadavg" -ge $((10#$midload)) ]; then
         echo $maxfreq > /sys/devices/system/cpu/cpu${i}/cpufreq/scaling_setspeed
       fi
   done
