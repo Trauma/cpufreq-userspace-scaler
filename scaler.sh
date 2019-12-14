@@ -1,4 +1,9 @@
 #!/bin/bash
+scriptname=`basename "$0"`
+if pidof -x $scriptname >/dev/null; then
+    echo "Process already running. Quitting now"
+    exit 0;
+fi
 
 # Get cpu cores count minus 1, to allow maping from 0
 cpucorecount=$(cat /proc/cpuinfo | grep cores | sort -u | awk '{ print $4 - 1 }')
