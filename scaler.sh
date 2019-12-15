@@ -33,6 +33,10 @@ fi
 
 # Frequency scaling function
 function main {
+  # Get current and max cpu temps
+  currtemp=$(cut -c 1-2 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_input)
+  maxtemp=$(cut -c 1-2 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_max)
+
   # Get average load over 5m in base10 integer format
   loadavg=$(awk -F . '{print $1 substr($2,1,2)}' < /proc/loadavg)
 
@@ -45,6 +49,7 @@ function main {
   lowload=${lowload:=050}
   midload=${midload:=065}
   highload=${highload:=085}
+  if [ "$currtemp" -lt "$maxtemp" ]; then
     for i in $(seq 0 "${cpucorecount}")
     do
       if [ "$loadavg" -le $((10#$lowload)) ]; then
@@ -55,6 +60,13 @@ function main {
           echo "$maxfreq" > /sys/devices/system/cpu/cpu"${i}"/cpufreq/scaling_setspeed
       fi
   done
+  else 
+    for i in $(seq 0 "${cpucorecount}")
+      do
+        echo "$midfreq" > /sys/devices/system/cpu/cpu"${i}"/cpufreq/scaling_setspeed
+    done
+    sleep 30
+  fi
 }
 
 # Deamonize the main function...
