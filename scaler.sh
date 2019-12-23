@@ -55,7 +55,7 @@ function main {
     do
       if [ "$loadavg" -le $((10#$lowload)) ]; then
           echo "$minfreq" > /sys/devices/system/cpu/cpu"${i}"/cpufreq/scaling_setspeed
-      elif [ "$loadavg" -ge $((10#$lowload)) ] && [ "$loadavg" -le $((10#$midload)) ]; then
+        elif [ "$loadavg" -ge $((10#$lowload)) ] && [ "$loadavg" -le $((10#$midload)) ]; then
           echo "$midfreq" > /sys/devices/system/cpu/cpu"${i}"/cpufreq/scaling_setspeed
         elif [ "$loadavg" -ge $((10#$midload)) ]; then
           echo "$maxfreq" > /sys/devices/system/cpu/cpu"${i}"/cpufreq/scaling_setspeed
