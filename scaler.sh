@@ -34,8 +34,8 @@ fi
 # Frequency scaling function
 function main {
   # Get current and max cpu temps
-  currtemp=$(cut -c 1-2 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_input)
-  maxtemp=$(cut -c 1-2 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_max)
+  currtemp=$(cut -c 1-3 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_input)
+  maxtemp=$(cut -c 1-3 < /sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_max)
 
   # Get average load over 5m in base10 integer format
   loadavg=$(awk -F . '{print $1 substr($2,1,2)}' < /proc/loadavg)
