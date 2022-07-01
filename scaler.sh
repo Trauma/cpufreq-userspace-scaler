@@ -6,6 +6,14 @@ set -euo pipefail
 # Get cpu cores count minus 1, to allow maping from 0
 cpucorecount=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 - 1 }')
 
+# Ensure acpi-cpufreq kernel module is loaded
+driver=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver)
+if [ "$driver" != "acpi-cpufreq" ]; then
+      pushd /lib/modules
+      insmod acpi-cpufreq.ko
+      popd
+fi
+
 # Set correct cpufreq governor to allow user defined frequency scaling
 governor=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)
 if [ "$governor" != "userspace" ]; then
