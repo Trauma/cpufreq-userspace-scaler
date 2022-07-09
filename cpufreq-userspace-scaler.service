@@ -1,0 +1,10 @@
+[Unit]
+Description=ACPI cpufreq userspace scaler
+
+[Service]
+User=root
+Restart=on-abnormal
+ExecStart=/usr/local/bin/scaler.sh
+
+[Install]
+WantedBy=multi-user.target
