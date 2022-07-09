@@ -23,4 +23,10 @@ scalingmaxfreq  | auto    | integer in hertz            | 2500000 = 2,5 Ghz
 `./scaling.sh &`
 
 ### Custom command line example :
-`lowload=100 highload=200 scalingmaxfreq=2000000 scalingminfreq=1500000 ./scaling.sh &`
+`lowload=100 midload=200 scalingmaxfreq=2000000 scalingminfreq=1500000 ./scaling.sh &`
+
+### Systemd service installer
+*for DSM 7.0 and above*
+
+1. If needed, set desired lowload and midload values in `cpufreq-userspace-scaler.service`
+2. Launch the installer `./install.sh`
