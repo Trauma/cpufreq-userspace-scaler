@@ -14,8 +14,8 @@ If you set `scalingmaxfreq` and/or `scalingminfreq` the cpu will never override 
 ### Parameters :
 Variable name   | Default | Type                        | Comments
 ----------------|---------|-----------------------------|-----------
-lowload         | 050     | integer between 000 and 999 | 050 = load average : 0.50
-midload         | 065     | integer between 000 and 999 | 065 = load average : 0.65
+lowload         | auto / 30%     | integer between 000 and 999 | 050 = load average : 0.50
+midload         | auto / 60%    | integer between 000 and 999 | 065 = load average : 0.65
 scalingminfreq  | auto    | integer in hertz            | 800000 = 800 Mhz
 scalingmaxfreq  | auto    | integer in hertz            | 2500000 = 2,5 Ghz
 
@@ -23,4 +23,10 @@ scalingmaxfreq  | auto    | integer in hertz            | 2500000 = 2,5 Ghz
 `./scaling.sh &`
 
 ### Custom command line example :
-`lowload=100 highload=200 scalingmaxfreq=2000000 scalingminfreq=1500000 ./scaling.sh &`
+`lowload=100 midload=200 scalingmaxfreq=2000000 scalingminfreq=1500000 ./scaling.sh &`
+
+### Systemd service installer
+*for DSM 7.0 and above*
+
+1. If needed, set desired lowload and midload values in `cpufreq-userspace-scaler.service`
+2. Launch the installer `./install.sh`
