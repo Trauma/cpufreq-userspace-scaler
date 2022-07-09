@@ -14,8 +14,8 @@ If you set `scalingmaxfreq` and/or `scalingminfreq` the cpu will never override 
 ### Parameters :
 Variable name   | Default | Type                        | Comments
 ----------------|---------|-----------------------------|-----------
-lowload         | 050     | integer between 000 and 999 | 050 = load average : 0.50
-midload         | 065     | integer between 000 and 999 | 065 = load average : 0.65
+lowload         | auto / 30%     | integer between 000 and 999 | 050 = load average : 0.50
+midload         | auto / 60%    | integer between 000 and 999 | 065 = load average : 0.65
 scalingminfreq  | auto    | integer in hertz            | 800000 = 800 Mhz
 scalingmaxfreq  | auto    | integer in hertz            | 2500000 = 2,5 Ghz
 
