@@ -9,14 +9,25 @@ if [ "$EUID" -ne 0 ]; then
   exit
 fi
 
+# Get cpu model
+cpufamilly=$(dmidecode --type processor | grep Stepping | awk '{ print $7 }' | tr -d ',')
+
+# CPU Familly specific settings
+case "${cpufamilly}" in
+92)
+  tempdigitrange="1-2"
+  ;;
+*)
+  tempdigitrange="1-3"
+  ;;
+esac
+
 # Get cpu cores count minus 1, to allow maping from 0
-cpucorecount=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 - 1 }')
+cpucorecount=$(nproc | awk '{ print $1 - 1 }')
 
 # Ensure acpi-cpufreq kernel module is loaded
 if ! modprobe acpi-cpufreq; then
-  pushd /lib/modules
-  insmod acpi-cpufreq.ko
-  popd
+  insmod /lib/modules/acpi-cpufreq.ko
 fi
 
 # Set correct cpufreq governor to allow user defined frequency scaling
@@ -45,8 +56,8 @@ fi
 # Frequency scaling function
 function main {
   # Get current and max cpu temps
-  currtemp=$(cut -c 1-3 </sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_input)
-  maxtemp=$(cut -c 1-3 </sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_max)
+  currtemp=$(cut -c "${tempdigitrange}" </sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_input)
+  maxtemp=$(cut -c "${tempdigitrange}" </sys/bus/platform/devices/coretemp.0/hwmon/hwmon0/temp1_max)
 
   # Get average load over 5m in base10 integer format
   loadavg=$(awk -F . '{print $1 substr($2,1,2)}' </proc/loadavg)
@@ -58,8 +69,8 @@ function main {
   coolfreq=${freqlist[3]}
 
   # Set load steps to trigger frequencies scaling, this user overidable
-  lowload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.3 * 100 }')
-  midload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.6 * 100 }')
+  lowload=$(nproc | awk '{ print $1 * 0.3 * 100 }')
+  midload=$(nproc | awk '{ print $1 * 0.6 * 100 }')
 
   if [ "$currtemp" -lt "$maxtemp" ]; then
     for i in $(seq 0 "${cpucorecount}"); do
