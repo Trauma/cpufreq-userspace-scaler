@@ -10,7 +10,7 @@ fi
 
 cp -f scaler.sh /usr/local/bin
 chmod +x /usr/local/bin/scaler.sh
-cp cpufreq-userspace-scaler.service /lib/systemd/system
+cp -f cpufreq-userspace-scaler.service /lib/systemd/system
 systemctl daemon-reload
-systemctl start cpufreq-userspace-scaler.service
+systemctl restart cpufreq-userspace-scaler.service
 systemctl status cpufreq-userspace-scaler.service
