@@ -59,8 +59,8 @@ function main {
   coolfreq=${freqlist[3]}
 
   # Set load steps to trigger frequencies scaling, this user overidable
-  lowload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.3 * 100 }')
-  midload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.6 * 100 }')
+  lowload=$(grep -c processor /proc/cpuinfo | awk '{ print $1 * 0.3 * 100 }')
+  midload=$(grep -c processor /proc/cpuinfo | awk '{ print $1 * 0.6 * 100 }')
 
   if [ "$currtemp" -lt "$maxtemp" ]; then
     for i in $(seq 0 "${cpucorecount}"); do
