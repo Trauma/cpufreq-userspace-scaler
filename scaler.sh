@@ -10,7 +10,8 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Get cpu cores count minus 1, to allow maping from 0
-cpucorecount=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 - 1 }')
+cpucorecount=$(grep -c processor /proc/cpuinfo)
+cpucorecount=$((cpucorecount-1))
 
 # Ensure acpi-cpufreq kernel module is loaded
 if ! modprobe acpi-cpufreq; then
@@ -58,8 +59,8 @@ function main {
   coolfreq=${freqlist[3]}
 
   # Set load steps to trigger frequencies scaling, this user overidable
-  lowload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.3 * 100 }')
-  midload=$(grep cores /proc/cpuinfo | sort -u | awk '{ print $4 * 0.6 * 100 }')
+  lowload=$(grep -c processor /proc/cpuinfo | awk '{ print $1 * 0.3 * 100 }')
+  midload=$(grep -c processor /proc/cpuinfo | awk '{ print $1 * 0.6 * 100 }')
 
   if [ "$currtemp" -lt "$maxtemp" ]; then
     for i in $(seq 0 "${cpucorecount}"); do
